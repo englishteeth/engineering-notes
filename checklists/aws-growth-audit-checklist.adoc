@@ -1,0 +1,346 @@
+= Have You Outgrown Your AWS Setup?
+A Self-Audit Checklist for Growing Engineering Teams
+Ian Robinson
+v1.0
+:doctype: article
+:toc: left
+:toc-title: Contents
+:toclevels: 2
+:icons: font
+:source-highlighter: highlight.js
+:checklist-caption:
+
+== Foreword
+
+The mistakes in this checklist are rarely the result of bad engineering.
+They're the result of good engineers focused on their part of the system,
+at a point in time, with the information they had.
+
+The problem is that distributed systems are not the sum of their parts —
+they're the product of how those parts interact, degrade, and evolve together
+over time.
+
+Most of the questions that follow don't have a service-level answer. They
+require someone to step back and own the whole picture. If nobody in your
+team does that, this checklist will feel uncomfortable.
+
+That discomfort is the point.
+
+---
+
+== Section 1: Cost & Billing
+
+=== Serverless Invocation Growth
+
+* [ ] Are your Lambda invocation counts and durations being tracked against cost thresholds?
+* [ ] Have you evaluated whether high-frequency, low-complexity functions that made sense at
+low volume are now candidates for migration to containerised or reserved compute?
+
+_Pay-as-you-go serverless feels like a win when you're starting out. As traffic grows,
+the cost and latency profile can quietly become a problem that a different architecture
+would solve more cheaply._
+
+---
+
+=== Data Ingress/Egress Cost Creep
+
+* [ ] Are you actively monitoring data transfer costs — cross-region, cross-AZ, and out-to-internet?
+* [ ] Do you understand which architectural decisions (where services live relative to each other)
+are driving your transfer costs?
+
+_These costs are invisible until they're not. Early placement decisions compound silently
+as data volumes grow._
+
+---
+
+=== Idle Resource Management
+
+* [ ] Are non-production environments scheduled to shut down outside working hours?
+* [ ] Are dev and staging RDS instances, NAT Gateways, and EC2 instances running 24/7?
+
+_If development environments are running when nobody is using them, the same pattern
+almost certainly exists in production. Leaving the lights on in dev is a cultural signal,
+not just a cost issue._
+
+---
+
+== Section 2: Architecture & Scaling
+
+=== Re-evaluate Pay-As-You-Go vs Reserved Capacity
+
+* [ ] Have you reviewed your workload patterns recently to assess whether they are now
+predictable enough to benefit from reserved instances or Savings Plans?
+* [ ] Are you paying a flexibility premium for dynamic scaling that your traffic patterns
+no longer require?
+
+_Dynamic scaling is ideal for unpredictable early-stage workloads. As traffic matures,
+you may be paying significantly for flexibility you no longer need. This is a sign of
+success — treat it like one._
+
+---
+
+=== Pico-Service Fragmentation
+
+* [ ] Have your microservices been decomposed around domain bounded contexts, or at the
+function level?
+* [ ] Is each service owning a coherent domain capability, or has it been split into
+units too small to be independently meaningful?
+
+_Overly granular services increase operational overhead, network latency, and deployment
+complexity without a corresponding architectural benefit. Decompose around domains,
+not functions._
+
+---
+
+=== Shared Resource Coupling
+
+* [ ] Are your services truly independent, or are they sharing databases, queues, or
+other infrastructure?
+* [ ] Can each service be deployed, scaled, and failed independently?
+
+_Shared resources create hidden coupling that undermines independent deployment and
+scaling — one of the core promises of a microservices architecture. If two services
+share a database, they are not two services._
+
+---
+
+=== Region-Bound Feature Availability
+
+* [ ] Have you verified that your chosen AWS region still supports all services and
+capabilities your architecture depends on?
+* [ ] Are you working around regional gaps you've quietly accepted?
+
+_Not all AWS services are available in all regions. Constraints accepted early can
+become embedded assumptions that are expensive to unpick later._
+
+---
+
+=== Data Sovereignty Drift
+
+* [ ] As your customer base has grown — particularly internationally — are you confident
+data residency and sovereignty requirements are still being met?
+* [ ] Have early region choices made for latency or cost reasons created compliance
+exposure as the business has scaled?
+
+---
+
+=== Cross-Region Cost Creep
+
+* [ ] Are you actively tracking the cost of data replication and transfer across regions?
+* [ ] Do you understand which resilience patterns are driving your cross-region spend?
+
+_What begins as a sensible resilience pattern can become a significant and poorly
+understood cost centre as data volumes grow._
+
+---
+
+=== The Failover Fallacy
+
+* [ ] Has your multi-region failover strategy been tested end-to-end under realistic conditions?
+* [ ] Do you know your actual RTO — not the figure in your documentation, but the time
+it took the last time you practiced?
+
+_An untested failover plan is not a failover plan. If you haven't practiced the recovery,
+you don't know your real RTO — and neither does your team._
+
+---
+
+== Section 3: CI/CD & Deployment
+
+=== Infrastructure as Code Discipline
+
+* [ ] Is your IaC versioned, peer-reviewed, and subject to the same quality standards
+as your application code?
+* [ ] Does your IaC live inside your engineering culture, or alongside it?
+
+_Infrastructure definitions that aren't treated with the same rigour as application code
+are a liability. The system your IaC provisions is only as reliable as the discipline
+behind it._
+
+---
+
+=== Pipeline Configuration Drift
+
+* [ ] Are your delivery configurations actively maintained and regularly reviewed?
+* [ ] Have your pipelines accumulated undocumented changes and workarounds that nobody
+fully understands?
+* [ ] Are your pipelines regularly exercised, or only run when a deployment is needed?
+
+_Deployment pipelines that aren't maintained become brittle and unpredictable exactly
+when you need them most — during an incident or a major release._
+
+---
+
+=== Monolithic Pipeline Architecture
+
+* [ ] Is your deployment pipeline modular and composable, or a single tightly coupled process?
+* [ ] Can pipeline stages be executed and tested in isolation?
+* [ ] Are pipeline components reusable across services?
+
+_A pipeline that can't be partially executed or reused will become a bottleneck as your
+team and product grow._
+
+---
+
+=== Pipeline Naming Coherence
+
+* [ ] Do your build pipeline components, stages, and artefacts use naming conventions
+consistent with your current service and domain language?
+* [ ] Does the language of your pipeline reflect the language of your codebase?
+
+_Misalignment between project naming and pipeline naming is a quiet indicator that the
+pipeline has become a separate concern from the codebase — owned by nobody, understood
+by few, and increasingly risky to change._
+
+---
+
+== Section 4: Security & Compliance
+
+=== Tutorial-Origin Permission Creep
+
+* [ ] Were your initial IAM roles and security groups configured during a proof-of-concept
+or tutorial phase?
+* [ ] Have default and example configurations been deliberately tightened since initial build?
+
+_AWS defaults and tutorials are deliberately open for ease of learning. Policies that
+were never tightened after the initial build represent silent, compounding exposure as
+the system grows around them._
+
+---
+
+=== IAM Naming and Intent Coherence
+
+* [ ] Do your IAM roles, policies, and security groups have names that clearly describe
+their purpose and the specific component they serve?
+* [ ] Can you identify the owner and intent of each policy from its name alone?
+
+_Vague or generic naming (`dev-role`, `test-sg`, `lambda-policy`) is a reliable indicator
+that permissions were created without a clear ownership model and are unlikely to have
+been reviewed since._
+
+---
+
+=== Permission-to-Process Traceability
+
+* [ ] Can you trace each significant IAM permission back to a specific business or
+technical requirement?
+* [ ] Do you have a practice for reviewing and removing permissions that are no longer needed?
+
+_AWS provides no native framework for permission traceability. Without deliberate practice,
+permissions accumulate without context and become almost impossible to safely audit or remove._
+
+---
+
+=== Trust Boundary Sprawl
+
+* [ ] As your architecture has grown and more services have been integrated, have your
+trust boundaries been explicitly redrawn?
+* [ ] Are your policy enforcement points adding latency that user experience or API
+consumers can't absorb?
+
+_Security that degrades user experience tends to get quietly worked around. Boundaries
+that were clearly defined early can become stretched and implicit over time — enforced
+in theory, bypassed in practice._
+
+---
+
+=== GDPR at Architectural Scale
+
+* [ ] Was your data privacy model designed when the system was simple?
+* [ ] As services have multiplied, have you re-verified where personal data lives,
+how it moves, and who can access it?
+* [ ] Is GDPR compliance reviewed as part of architectural change, or treated as a
+one-time implementation?
+
+_GDPR compliance isn't a checkbox — it needs to be re-verified as the architecture evolves._
+
+---
+
+== Section 5: Observability & Operational Maturity
+
+=== Intentional Log Levels
+
+* [ ] Are log levels used with discipline across your services, or has everything drifted
+to DEBUG in production?
+* [ ] Do your log levels reflect genuine severity and operational relevance?
+
+_Noisy logs are as dangerous as no logs. They bury the signal you need during an incident._
+
+---
+
+=== Context-Rich Logging
+
+* [ ] Do your logs describe what the system is _doing_, or simply mark code entry and exit points?
+* [ ] Would an engineer unfamiliar with the codebase understand what business operation
+was in progress, what the relevant state was, and what outcome occurred?
+
+_Entry and exit markers are a development scaffold, not an operational tool. A log entry
+should tell a story, not a stack trace._
+
+---
+
+=== Distributed Tracing
+
+* [ ] Are you using OpenTelemetry or equivalent to trace requests across service boundaries?
+* [ ] Can you correlate a user-facing issue to a specific chain of service interactions?
+
+_In a distributed system, correlated tracing isn't optional — it's the difference between
+diagnosing an incident in minutes or hours. As your service count grows, the absence of
+this becomes exponentially more painful._
+
+---
+
+=== Alerting vs Absence of Incidents
+
+* [ ] Is your system healthy, or have you just not had any reported incidents recently?
+* [ ] Do you have proactive alerting tied to meaningful thresholds, or are you dependent
+on users reporting problems?
+
+_These are not the same thing. Without proactive alerting, your users are your monitoring._
+
+---
+
+=== Operational Visibility
+
+* [ ] Do you have dashboards showing real-time throughput, error rates, and latency
+across your key services?
+* [ ] Can your on-call engineer assess system health in under thirty seconds?
+
+_Operational health shouldn't require log diving to assess. If it does, your observability
+isn't mature enough for your scale._
+
+---
+
+=== Chaos Readiness
+
+* [ ] What happens if you kill a critical service right now?
+* [ ] Is your failure response practiced and documented, or theoretical?
+* [ ] When did you last simulate a significant failure?
+
+_The question isn't whether something will fail — it's whether you'll be ready when it does.
+Untested failure modes multiply as systems grow._
+
+---
+
+== A Final Word on Ownership
+
+Every section in this checklist can be addressed with the right tool, practice, or process.
+But tools don't fix the root cause.
+
+The teams that outgrow their AWS setup without noticing almost always share one characteristic:
+nobody owns the whole picture. Individual services are healthy. Individual teams are performing.
+But the system — the interactions, the dependencies, the accumulated decisions — belongs to nobody.
+
+A distributed system is not the sum of its parts. It is the product of how those parts
+interact, degrade, and evolve together over time.
+
+The most important question this checklist can prompt isn't technical.
+
+*Who in your organisation is looking at the whole thing?*
+
+---
+
+_Ian Robinson is a Software Architect and Consultant with over 30 years of experience
+designing scalable systems across cloud, financial services, defence, and startup environments.
+For architecture review enquiries: ian@englishteeth.com_
+

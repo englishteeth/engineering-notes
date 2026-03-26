@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# VS Code / editor agent config (local tooling, not repo content)
+.claude/
+.codex/
+
+# AsciiDoc generated output
+*.html
+
+# Note: PDFs are intentionally tracked in this repo (pre-rendered for readers)

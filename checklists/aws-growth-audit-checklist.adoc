@@ -65,6 +65,8 @@ _If development environments are running when nobody is using them, the same pat
 almost certainly exists in production. Leaving the lights on in dev is a cultural signal,
 not just a cost issue._
 
+---
+
 <<<
 
 == Section 2: Architecture & Scaling
@@ -146,6 +148,8 @@ it took the last time you practiced?
 _An untested failover plan is not a failover plan. If you haven't practiced the recovery,
 you don't know your real RTO — and neither does your team._
 
+---
+
 <<<
 
 == Section 3: CI/CD & Deployment
@@ -194,6 +198,8 @@ consistent with your current service and domain language?
 _Misalignment between project naming and pipeline naming is a quiet indicator that the
 pipeline has become a separate concern from the codebase — owned by nobody, understood
 by few, and increasingly risky to change._
+
+---
 
 <<<
 
@@ -257,6 +263,8 @@ one-time implementation?
 
 _GDPR compliance isn't a checkbox — it needs to be re-verified as the architecture evolves._
 
+---
+
 <<<
 
 == Section 5: Observability & Operational Maturity
@@ -305,15 +313,12 @@ _These are not the same thing. Without proactive alerting, your users are your m
 
 === Operational Visibility
 
-[%unbreakable]
---
 * [ ] Do you have dashboards showing real-time throughput, error rates, and latency
 across your key services?
 * [ ] Can your on-call engineer assess system health in under thirty seconds?
 
 _Operational health shouldn't require log diving to assess. If it does, your observability
 isn't mature enough for your scale._
---
 
 ---
 
@@ -325,6 +330,8 @@ isn't mature enough for your scale._
 
 _The question isn't whether something will fail — it's whether you'll be ready when it does.
 Untested failure modes multiply as systems grow._
+
+---
 
 <<<
 

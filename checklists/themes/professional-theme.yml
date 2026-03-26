@@ -116,31 +116,25 @@ prose:
 
 header:
   height: 0.5in
-  border-bottom-width: 0
+  border-width: 0
   font-size: 8
   font-color: #999999
-  recto:
+  recto: &shared_header
     right:
       content: '{document-title}'
-  verso:
-    right:
-      content: '{document-title}'
+  verso: *shared_header
 
 footer:
   height: 0.5in
-  border-top-width: 0
+  border-width: 0
   font-size: 8
   font-color: #999999
-  recto:
+  recto: &shared_footer
     left:
       content: 'v{revnumber} — {author}'
     right:
-      content: '{page-number} / {page-count}'
-  verso:
-    left:
-      content: 'v{revnumber} — {author}'
-    right:
-      content: '{page-number} / {page-count}'
+      content: '{page-number}'
+  verso: *shared_footer
 
 table:
   border-color: #dddddd

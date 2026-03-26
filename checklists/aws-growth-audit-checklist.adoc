@@ -10,6 +10,8 @@ v1.0
 :icons: font
 :source-highlighter: highlight.js
 :checklist-caption:
+:title-page:
+:toc-title: Table of Contents
 
 == Foreword
 
@@ -27,7 +29,7 @@ team does that, this checklist will feel uncomfortable.
 
 That discomfort is the point.
 
----
+<<<
 
 == Section 1: Cost & Billing
 
@@ -64,6 +66,8 @@ almost certainly exists in production. Leaving the lights on in dev is a cultura
 not just a cost issue._
 
 ---
+
+<<<
 
 == Section 2: Architecture & Scaling
 
@@ -146,6 +150,8 @@ you don't know your real RTO — and neither does your team._
 
 ---
 
+<<<
+
 == Section 3: CI/CD & Deployment
 
 === Infrastructure as Code Discipline
@@ -194,6 +200,8 @@ pipeline has become a separate concern from the codebase — owned by nobody, un
 by few, and increasingly risky to change._
 
 ---
+
+<<<
 
 == Section 4: Security & Compliance
 
@@ -256,6 +264,8 @@ one-time implementation?
 _GDPR compliance isn't a checkbox — it needs to be re-verified as the architecture evolves._
 
 ---
+
+<<<
 
 == Section 5: Observability & Operational Maturity
 
@@ -322,6 +332,8 @@ _The question isn't whether something will fail — it's whether you'll be ready
 Untested failure modes multiply as systems grow._
 
 ---
+
+<<<
 
 == A Final Word on Ownership
 

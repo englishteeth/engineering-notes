@@ -47,7 +47,7 @@ The source is written in AsciiDoc. To generate your preferred format locally:
 
 **PDF**
 ```bash
-asciidoctor-pdf aws-growth-audit-checklist.adoc
+asciidoctor-pdf -a pdf-theme=professional -a pdf-themesdir=themes aws-growth-audit-checklist.adoc
 ```
 
 **HTML**

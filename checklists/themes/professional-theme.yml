@@ -54,9 +54,9 @@ heading:
     font-size: 16
     margin-top: 14
     margin-bottom: 6
-    border-bottom-width: 0.5
-    border-bottom-color: #cccccc
-    padding-bottom: 3
+    border-color: #cccccc
+    border-width: [0, 0, 0.5, 0]
+    padding: [0, 0, 3, 0]
   h3:
     font-size: 12.5
     font-style: bold_italic
@@ -69,8 +69,7 @@ link:
 list:
   indent: $base-font-size * 1.5
   item-spacing: 4
-  marker:
-    font-color: #1a1a2e
+  marker-font-color: #1a1a2e
 
 description-list:
   term-font-style: bold
@@ -108,8 +107,7 @@ thematic-break:
   border-color: #e0e0e0
   border-style: solid
   border-width: 0.5
-  margin-top: 8
-  margin-bottom: 8
+  padding: [8, 0]
 
 prose:
   margin-bottom: 6

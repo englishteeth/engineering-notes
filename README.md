@@ -16,12 +16,23 @@ Structured prompts for teams who'd rather find a problem themselves than be surp
 | Title | Description |
 |---|---|
 | [Have You Outgrown Your AWS Setup?](checklists/aws-growth-audit-checklist.adoc) | A self-audit for growing engineering teams whose cloud architecture has evolved faster than it's been reviewed |
+| [Is Your Microservice Architecture Actually Working?](checklists/microservices-health-check.adoc) | A health check for teams beyond the honeymoon phase of microservices adoption |
+| [Technical Debt Triage](checklists/technical-debt-triage.adoc) | A structured framework for teams who know they have debt but don't know where to start |
 
 ### Guides
-*(Coming soon)*
+Longer-form material for engineers and architects working through specific challenges.
+
+| Title | Description |
+|---|---|
+| [Running an Effective Architecture Review](guides/architecture-review.adoc) | A practical guide for teams inheriting, scaling, or questioning their systems |
 
 ### Templates
-*(Coming soon)*
+Starting points for engineering practices that benefit from structure.
+
+| Title | Description |
+|---|---|
+| [Architecture Decision Record](templates/adr-template.adoc) | A lightweight template for recording architectural decisions and the reasoning behind them |
+| [Incident Post-Mortem](templates/incident-post-mortem.adoc) | A structured template for learning from production incidents without assigning blame |
 
 ---
 

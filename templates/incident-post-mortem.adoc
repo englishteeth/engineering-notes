@@ -1,0 +1,159 @@
+= Incident Post-Mortem
+:doctype: article
+:icons: font
+
+== Incident: [Short, descriptive title]
+
+=== Summary
+
+|===
+| *Severity* | [P1 / P2 / P3 / P4]
+| *Date* | YYYY-MM-DD
+| *Duration* | [Total time from detection to resolution]
+| *Detection* | [How was the incident discovered? Monitoring / customer report / internal observation]
+| *Services Affected* | [List affected services or components]
+| *Customer Impact* | [Brief description of what customers experienced]
+| *Responders* | [Who was involved in the response]
+|===
+
+<<<
+
+=== Timeline
+
+Reconstruct the incident chronologically. Use UTC timestamps.
+
+|===
+| *Time (UTC)* | *Event*
+
+| HH:MM | [First observable symptom or triggering event]
+| HH:MM | [Detection — how and by whom]
+| HH:MM | [Initial response action]
+| HH:MM | [Escalation points, if any]
+| HH:MM | [Key diagnostic steps]
+| HH:MM | [Mitigation applied]
+| HH:MM | [Service restored]
+| HH:MM | [Confirmed resolution]
+|===
+
+_Be precise and factual. The timeline should read like a log, not a narrative.
+Include the gaps — "20 minutes passed while we looked at the wrong service"
+is a valid and valuable entry._
+
+<<<
+
+=== Root Cause
+
+Describe the technical root cause clearly. Distinguish between:
+
+* *Trigger:* The immediate event that caused the incident
+* *Underlying cause:* The systemic condition that allowed the trigger to cause an outage
+* *Contributing factors:* Conditions that made detection slower or impact worse
+
+_Most incidents have a trigger that's easy to identify and an underlying cause
+that's harder to admit. The value is in the underlying cause._
+
+<<<
+
+=== What Went Well
+
+List the things that worked during the response. This matters.
+
+* [ ] [e.g., Alerting fired within expected thresholds]
+* [ ] [e.g., Runbook was current and accurate]
+* [ ] [e.g., Team mobilised quickly]
+* [ ] [e.g., Communication to stakeholders was timely]
+
+_Acknowledging what worked prevents the post-mortem from becoming an exercise
+in blame. It also identifies practices worth preserving._
+
+<<<
+
+=== What Went Poorly
+
+List the things that didn't work or slowed the response.
+
+* [ ] [e.g., Alert was too noisy to distinguish from background noise]
+* [ ] [e.g., No runbook existed for this failure mode]
+* [ ] [e.g., Key responder was unavailable and there was no backup]
+* [ ] [e.g., Root cause was misidentified initially, delaying fix by 30 minutes]
+
+_Be honest and specific. "Communication could have been better" is not useful.
+"It took 15 minutes to identify the correct Slack channel for incident response"
+is useful._
+
+<<<
+
+=== Action Items
+
+Each action must have an owner and a target date. Unowned actions don't get done.
+
+|===
+| *ID* | *Action* | *Owner* | *Priority* | *Target Date* | *Status*
+
+| 1 | [Specific, actionable item] | [Name] | [P1/P2/P3] | YYYY-MM-DD | [Open / In Progress / Done]
+| 2 | [Specific, actionable item] | [Name] | [P1/P2/P3] | YYYY-MM-DD | [Open / In Progress / Done]
+| 3 | [Specific, actionable item] | [Name] | [P1/P2/P3] | YYYY-MM-DD | [Open / In Progress / Done]
+|===
+
+_Actions should address the underlying cause and contributing factors, not just the trigger.
+Fixing the trigger prevents this exact incident from recurring. Fixing the underlying cause
+prevents the category of incident._
+
+<<<
+
+=== Lessons Learned
+
+What did this incident teach us that we didn't know — or knew but hadn't acted on?
+
+* [Lesson 1]
+* [Lesson 2]
+* [Lesson 3]
+
+<<<
+
+=== Review Schedule
+
+|===
+| *Review Date* | *Purpose*
+
+| [2 weeks after incident] | Confirm action items are in progress
+| [30 days after incident] | Verify completed actions have had intended effect
+|===
+
+---
+
+== Guidance for Writing Post-Mortems
+
+=== The Purpose
+
+A post-mortem exists to make the system and the team better. It is not an
+investigation into who made a mistake. If people are afraid of the post-mortem,
+they will hide information — and the next incident will be worse.
+
+=== Blameless Does Not Mean Accountable-less
+
+Blameless means we don't punish people for honest mistakes or for being
+the person closest to the failure. It doesn't mean we avoid identifying
+what went wrong. Systems fail because of systemic conditions, not because
+individuals are careless.
+
+=== Specificity Over Thoroughness
+
+A post-mortem with three specific, actionable findings is worth more than
+one with twenty vague observations. Focus on what you can change.
+
+=== The 24/48 Rule
+
+Write the timeline within 24 hours while memories are fresh. Complete
+the analysis within 48 hours while the team's attention is still focused.
+Post-mortems written weeks later are archaeology, not learning.
+
+=== Follow Through
+
+A post-mortem without completed action items is a document. A post-mortem
+with completed action items is an improvement. Track them, review them,
+and close them.
+
+---
+
+_Template by Ian Robinson._

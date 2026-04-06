@@ -1,0 +1,287 @@
+= Technical Debt Triage
+A Structured Framework for Teams Who Know They Have Debt but Don't Know Where to Start
+Ian Robinson
+v1.0
+
+:doctype: article
+:toc: left
+:toc-title: Contents
+:toclevels: 2
+:icons: font
+:source-highlighter: highlight.js
+:checklist-caption:
+:title-page:
+:toc-title: Table of Contents
+
+== Foreword
+
+Every codebase has technical debt. That's not the problem.
+
+The problem is that most teams treat technical debt as a single, amorphous backlog
+item labelled "tech debt" that competes with feature work and always loses.
+
+Debt isn't one thing. It has different causes, different costs, and different urgencies.
+Some of it is killing you slowly. Some of it doesn't matter. Some of it is load-bearing
+and should be left alone.
+
+This checklist is a triage tool. It won't eliminate your debt, but it will help you
+see it clearly, classify it honestly, and decide where to spend your limited time
+for maximum effect.
+
+<<<
+
+== Section 1: Visibility & Awareness
+
+=== Do You Know What You Owe?
+
+* [ ] Can your team list the top five pieces of technical debt in the system?
+* [ ] Would two different team members produce the same list?
+* [ ] Is technical debt tracked alongside feature work, or kept in a separate
+backlog that nobody reviews?
+
+_If the team can't agree on what the debt is, you can't prioritise it.
+Invisible debt is the most expensive kind — not because it's worse,
+but because it compounds without scrutiny._
+
+---
+
+=== Debt Archaeology
+
+* [ ] Do you know _why_ each significant piece of debt exists?
+* [ ] Was it a deliberate shortcut taken under time pressure, or an accident
+that was never corrected?
+* [ ] Is the original context still valid?
+
+_Deliberate debt taken with open eyes is a legitimate engineering decision.
+Accidental debt that nobody noticed is a quality problem. They need different
+responses. The first needs a repayment plan. The second needs a process change._
+
+---
+
+=== The Debt Register
+
+* [ ] Do you maintain a lightweight register of known technical debt?
+* [ ] Does each entry describe the impact, not just the symptom?
+* [ ] Is the register reviewed regularly, or is it where debt goes to die?
+
+_A debt register that's updated once and never reviewed is worse than no register
+at all — it creates the illusion of management without the practice of it._
+
+---
+
+<<<
+
+== Section 2: Classification
+
+Not all debt is equal. These categories help distinguish between debt that demands
+attention and debt that can wait.
+
+=== Reckless vs Prudent
+
+* [ ] Was this debt incurred knowingly, with a plan to address it?
+* [ ] Or was it incurred through ignorance, haste, or neglect?
+
+_Prudent debt is a tool. Reckless debt is a warning sign. If most of your debt
+is reckless, you have a process problem, not a backlog problem._
+
+---
+
+=== Load-Bearing Debt
+
+* [ ] Are there pieces of debt that the system now depends on?
+* [ ] Would removing this debt require significant rearchitecting?
+* [ ] Is there code that's ugly but stable, widely depended upon, and rarely changed?
+
+_Not all debt should be repaid. Some of it has become structural. Rewriting a
+stable, load-bearing component for aesthetic reasons is not debt repayment —
+it's risk introduction._
+
+---
+
+=== Compounding Debt
+
+* [ ] Which pieces of debt make other work slower or more error-prone?
+* [ ] Are there areas of the codebase that every developer avoids or dreads?
+* [ ] Do you have components where the cost of every change includes the cost
+of working around existing problems?
+
+_This is the debt that matters most. Compounding debt taxes every future change.
+Left alone, it turns a productive team into a slow one — not through any single
+decision, but through the accumulated friction of a hundred workarounds._
+
+---
+
+=== Dormant Debt
+
+* [ ] Do you have debt in parts of the system that are rarely changed?
+* [ ] Is anyone proposing to fix debt in stable, low-traffic code?
+* [ ] Would the effort to fix it produce any measurable improvement?
+
+_Debt in code that nobody touches and that performs adequately is debt you can
+live with. Prioritising it over compounding debt in high-traffic code is a
+misallocation of engineering time._
+
+---
+
+<<<
+
+== Section 3: Impact Assessment
+
+=== Velocity Impact
+
+* [ ] Has your team's delivery speed measurably declined over the past six months?
+* [ ] Can you attribute that decline to specific areas of the codebase?
+* [ ] Are estimates for "simple" changes growing because the surrounding code
+is difficult to work with?
+
+_Velocity decline is the most visible symptom of compounding debt. But it's also
+the easiest to misattribute. Make sure you're measuring the right cause._
+
+---
+
+=== Incident Correlation
+
+* [ ] Are your production incidents concentrated in specific areas of the codebase?
+* [ ] Do the same components appear repeatedly in post-mortem timelines?
+* [ ] Have you mapped your incident history against your known debt?
+
+_If the same component appears in three post-mortems in six months, that's not
+bad luck — it's a pattern. Incident data is the most persuasive argument for
+debt repayment you will ever have._
+
+---
+
+=== Onboarding Cost
+
+* [ ] How long does it take a new developer to become productive?
+* [ ] Are there areas of the system that require oral tradition to understand?
+* [ ] Do new joiners routinely ask "why is it done this way?" and receive the
+answer "historical reasons"?
+
+_If onboarding requires tribal knowledge, the debt is not just in the code —
+it's in the organisational dependency on specific individuals. That's a bus
+factor problem disguised as a codebase problem._
+
+---
+
+=== Recruitment & Retention Signal
+
+* [ ] Are developers citing codebase quality as a reason for frustration or departure?
+* [ ] Is the state of the codebase affecting your ability to attract talent?
+* [ ] Do candidates ask about technical debt in interviews?
+
+_Engineers talk. The state of your codebase is not a secret. If it's driving
+people away, the cost of the debt includes the cost of the people you've lost
+and the people you can't hire._
+
+---
+
+<<<
+
+== Section 4: Prioritisation
+
+=== The Two-Axis Test
+
+For each significant piece of debt, ask:
+
+* [ ] How often is this code changed? (High frequency = higher priority)
+* [ ] How painful is it when it is changed? (High pain = higher priority)
+
+_Debt in frequently-changed, high-pain code is your top priority. Debt in
+rarely-changed, low-pain code is your lowest. This is a better prioritisation
+framework than severity alone._
+
+---
+
+=== Quick Wins
+
+* [ ] Are there small, low-risk improvements that would immediately reduce friction?
+* [ ] Can any debt be addressed incrementally as part of feature work?
+* [ ] Is your team allowed to improve code they touch, or are they pressured to
+make the minimum change?
+
+_The Boy Scout Rule — leave the code better than you found it — is the most
+effective debt repayment strategy that exists. But it only works if the culture
+supports it. If developers are measured on story points and punished for
+"scope creep", the debt will grow._
+
+---
+
+=== The Business Case
+
+* [ ] Can you quantify the cost of your top debt items in terms the business understands?
+  (Slower delivery, more incidents, higher onboarding time, recruitment difficulty)
+* [ ] Have you presented debt repayment as an investment rather than a cost?
+* [ ] Does your leadership understand the difference between "we should fix this"
+and "this is costing us X per quarter"?
+
+_"We need to refactor" is a request. "This component has caused four incidents in
+three months, each costing an average of 12 hours of engineering time" is a
+business case. One gets deferred. The other gets funded._
+
+---
+
+<<<
+
+== Section 5: Repayment Strategy
+
+=== Dedicated Time vs Continuous Improvement
+
+* [ ] Do you allocate regular time for debt repayment, or rely on goodwill and slack?
+* [ ] If you have a "20% time" or "tech debt sprint", does it actually happen?
+* [ ] Is there accountability for debt repayment, or does it quietly slip when
+deadlines tighten?
+
+_Allocated time that consistently gets cancelled is worse than no allocation.
+It signals that the organisation values debt repayment in theory but not in
+practice. Engineers stop believing in it — and stop proposing it._
+
+---
+
+=== Strangler Pattern Thinking
+
+* [ ] For large-scale debt, have you considered incremental replacement over
+big-bang rewrites?
+* [ ] Can you put a new implementation alongside the old one and migrate gradually?
+* [ ] Is there a component the team wants to rewrite from scratch — and have you
+questioned whether that's really necessary?
+
+_The urge to rewrite is strong and almost always underestimates the complexity
+hidden in the existing implementation. Incremental replacement is slower, less
+satisfying, and far more likely to succeed._
+
+---
+
+=== Measuring Progress
+
+* [ ] How will you know if debt repayment is working?
+* [ ] Are you tracking leading indicators (deployment frequency, change failure
+rate, time to resolve) alongside the debt register?
+* [ ] Can you demonstrate to the business that the investment is paying off?
+
+_If you can't measure the impact of debt repayment, you can't justify continuing it.
+Choose metrics that the business cares about, not ones that only engineers understand._
+
+---
+
+<<<
+
+== A Final Thought
+
+The teams that manage technical debt well share a common characteristic:
+they talk about it openly, often, and without shame.
+
+Debt isn't a sign of failure. It's a sign that the system has been through
+enough real-world use to accumulate compromises. The failure is not in having
+debt — it's in pretending it doesn't exist, or in treating it as someone
+else's problem.
+
+The best time to address technical debt was when it was incurred.
+The second best time is now — starting with the piece that's costing you
+the most.
+
+---
+
+_Ian Robinson is a Software Architect and Consultant with over 30 years of experience
+designing scalable systems across cloud, financial services, defence, and startup environments.
+For architecture review enquiries: ian@englishteeth.com_

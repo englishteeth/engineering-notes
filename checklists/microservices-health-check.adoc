@@ -1,0 +1,281 @@
+= Is Your Microservice Architecture Actually Working?
+A Health Check for Teams Beyond the Honeymoon Phase
+Ian Robinson
+v1.0
+
+:doctype: article
+:toc: left
+:toc-title: Contents
+:toclevels: 2
+:icons: font
+:source-highlighter: highlight.js
+:checklist-caption:
+:title-page:
+:toc-title: Table of Contents
+
+== Foreword
+
+Microservices are easy to start and hard to get right.
+
+The pattern promises independent deployment, team autonomy, and clean boundaries.
+What it actually delivers depends almost entirely on how carefully you drew those
+boundaries — and whether you've revisited them since.
+
+Most teams I review have adopted the labels of microservices without achieving the
+properties. They have many small things, deployed separately, that cannot function
+independently. That's not a microservice architecture. That's a distributed monolith
+with better marketing.
+
+This checklist won't tell you whether microservices are right for you.
+It will help you see whether the ones you have are doing what you thought they would.
+
+<<<
+
+== Section 1: Service Boundaries
+
+=== Domain Alignment
+
+* [ ] Can you describe each service's responsibility in a single sentence using
+business domain language?
+* [ ] Were your service boundaries drawn around domain capabilities, or around
+technical layers (API, persistence, processing)?
+
+_A service that is a thin wrapper around a database table is not a microservice.
+It's a CRUD API with infrastructure overhead. Services should own coherent
+slices of business capability._
+
+---
+
+=== Boundary Stability
+
+* [ ] When a business requirement changes, how many services need to be modified?
+* [ ] Do feature requests routinely span three or more services?
+
+_If a single feature consistently requires coordinated changes across multiple
+services, your boundaries are in the wrong place. Good boundaries absorb
+change — they don't distribute it._
+
+---
+
+=== Data Ownership
+
+* [ ] Does each service own its data exclusively?
+* [ ] Are any services reading from or writing to another service's database?
+* [ ] Do you have shared database schemas between services?
+
+_If two services share a database, they are one service with two deployment
+pipelines. Shared data stores create invisible coupling that makes independent
+deployment a fiction._
+
+---
+
+=== API Contract Discipline
+
+* [ ] Are your service APIs versioned?
+* [ ] Do you have a strategy for deprecating and retiring old API versions?
+* [ ] Can a service update its internal implementation without changing its API?
+
+_The API is the boundary. If internal changes routinely force API changes,
+the abstraction isn't working._
+
+---
+
+<<<
+
+== Section 2: Independence & Deployment
+
+=== Independent Deployability
+
+* [ ] Can each service be deployed to production without coordinating with other teams?
+* [ ] When was the last time you deployed a single service in isolation?
+* [ ] Do you have services that must be deployed together — even informally?
+
+_Independent deployment is the core benefit of the microservice pattern.
+If you can't do it, you're paying the operational cost of distribution
+without receiving the architectural benefit._
+
+---
+
+=== Deployment Frequency
+
+* [ ] How often does each service get deployed independently?
+* [ ] Are some services deployed frequently while others haven't been touched in months?
+* [ ] Do "dormant" services receive security patches and dependency updates?
+
+_A service that hasn't been deployed in six months is a liability.
+Its deployment pipeline is untested, its dependencies are stale, and
+the team's confidence in changing it is low._
+
+---
+
+=== Coordinated Release Ceremonies
+
+* [ ] Do you have a release train, deployment window, or cross-service release
+coordination process?
+* [ ] Is there a person whose job it is to orchestrate releases across services?
+
+_If your microservice architecture requires a release coordinator, you've
+recreated the monolith's deployment coupling while adding network overhead.
+The architecture isn't buying you what you think it is._
+
+---
+
+<<<
+
+== Section 3: Operational Reality
+
+=== Failure Isolation
+
+* [ ] When a single service fails, what else breaks?
+* [ ] Do you have circuit breakers or bulkheads between services?
+* [ ] Have you tested what happens when a downstream dependency is slow
+(not down — slow)?
+
+_Distributed systems have a failure mode that monoliths don't: cascading
+slowness. A slow dependency is often worse than a failed one, because it
+ties up resources throughout the call chain._
+
+---
+
+=== Timeout and Retry Discipline
+
+* [ ] Are timeouts explicitly configured on every inter-service call?
+* [ ] Are retry policies deliberate, or are you relying on client library defaults?
+* [ ] Have you checked whether retries in one layer compound with retries in another?
+
+_Compounding retries across layers can turn a brief downstream hiccup into
+a sustained load spike that takes down the entire system. This is not a
+theoretical risk — it's one of the most common failure patterns in distributed
+architectures._
+
+---
+
+=== Observability Across Boundaries
+
+* [ ] Can you trace a single user request across all the services it touches?
+* [ ] Do your logs and metrics share a common correlation ID?
+* [ ] Can you diagnose a cross-service issue without logging into multiple systems?
+
+_If you can't follow a request through your system, you're operating blind.
+Distributed tracing is not a nice-to-have — it's the operational price of
+admission for microservices._
+
+---
+
+=== Service Discovery and Routing
+
+* [ ] Do your services find each other through a discovery mechanism, or through
+hardcoded configuration?
+* [ ] What happens when a service instance is retired or replaced?
+
+_Hardcoded service locations work until they don't. And they tend to stop
+working at the least convenient moment._
+
+---
+
+<<<
+
+== Section 4: Team & Organisational Signals
+
+=== Team-to-Service Alignment
+
+* [ ] Does each service have a clearly identified owning team?
+* [ ] Are there services that sit between teams with no clear owner?
+* [ ] Can a single team make changes to their services without waiting on another team?
+
+_Conway's Law is not a suggestion. If your team structure doesn't match your
+service structure, one of them will bend — and it's usually the architecture.
+Unowned services accumulate debt faster than anything else in the system._
+
+---
+
+=== Cognitive Load
+
+* [ ] How many services does each team own and operate?
+* [ ] Can a developer on the team explain what each of their services does and
+how they interact?
+* [ ] Is the team spending more time on operational toil than on feature delivery?
+
+_There's a limit to how many services a team can own before quality degrades.
+If developers can't hold the system in their head, they can't reason about
+it — and unreasonable systems produce unreasonable bugs._
+
+---
+
+=== Shared Library Coupling
+
+* [ ] Do your services share common libraries for business logic (not just utilities)?
+* [ ] When a shared library is updated, how many services need to be rebuilt and redeployed?
+* [ ] Has a shared library update ever caused a production incident?
+
+_Shared libraries are the polite version of a shared database. They create
+coupling that's invisible until a change in one library forces a cascade
+of deployments across the system._
+
+---
+
+<<<
+
+== Section 5: Data & Consistency
+
+=== Eventual Consistency Understanding
+
+* [ ] Does your team understand where the system is eventually consistent
+versus strongly consistent?
+* [ ] Have you documented the consistency guarantees your users actually experience?
+* [ ] Have you had incidents caused by stale reads or out-of-order events?
+
+_Eventual consistency isn't a problem — it's a tradeoff. But it becomes a problem
+when the team doesn't know where it applies, or when the business expects consistency
+the architecture can't guarantee._
+
+---
+
+=== Event-Driven Complexity
+
+* [ ] If you use asynchronous messaging, can you trace the full lifecycle of a message
+from publication to final consumption?
+* [ ] Do you have dead letter queues, and are they monitored?
+* [ ] When was the last time you reviewed what's in your dead letter queues?
+
+_Dead letter queues are where your system quietly puts the problems it can't solve.
+If nobody is looking at them, you have a growing backlog of unprocessed failures
+that are invisible to your monitoring._
+
+---
+
+=== Cross-Service Reporting
+
+* [ ] How do you answer questions that require data from multiple services?
+* [ ] Do you have a separate read model, data warehouse, or reporting service?
+* [ ] Are teams building ad-hoc queries directly against other services' databases?
+
+_The moment someone needs data from three services to answer a business question,
+the temptation to bypass service boundaries becomes overwhelming. If you don't
+provide a legitimate path for cross-service reporting, people will create an
+illegitimate one._
+
+---
+
+<<<
+
+== A Final Thought
+
+The best microservice architectures I've reviewed have a quality that's hard to quantify:
+they feel calm. Each service does one thing, owns its data, deploys independently,
+and fails gracefully. The teams that own them can explain what they do without
+reaching for a whiteboard.
+
+The worst ones feel frantic. Changes ripple unpredictably. Deployments require
+ceremonies. Incidents are archaeological expeditions. Teams spend more time
+coordinating than building.
+
+If your architecture feels more like the second description than the first,
+the answer is rarely more services. It's usually better boundaries on the
+ones you have.
+
+---
+
+_Ian Robinson is a Software Architect and Consultant with over 30 years of experience
+designing scalable systems across cloud, financial services, defence, and startup environments.
+For architecture review enquiries: ian@englishteeth.com_

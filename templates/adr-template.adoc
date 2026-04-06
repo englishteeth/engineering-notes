@@ -1,0 +1,120 @@
+= Architecture Decision Record
+:doctype: article
+:icons: font
+
+== ADR-000: [Title of Decision]
+
+=== Status
+
+[Proposed | Accepted | Deprecated | Superseded by ADR-XXX]
+
+=== Date
+
+YYYY-MM-DD
+
+=== Context
+
+Describe the situation that requires a decision. Include:
+
+* The problem or requirement driving this decision
+* The constraints and forces at play (technical, organisational, or business)
+* Any relevant history or prior decisions
+
+_Be specific. A reader unfamiliar with the current context should understand
+why this decision is being made._
+
+=== Options Considered
+
+==== Option 1: [Name]
+
+* Description of the approach
+* Pros:
+** [advantage]
+** [advantage]
+* Cons:
+** [disadvantage]
+** [disadvantage]
+
+==== Option 2: [Name]
+
+* Description of the approach
+* Pros:
+** [advantage]
+** [advantage]
+* Cons:
+** [disadvantage]
+** [disadvantage]
+
+==== Option 3: [Name]
+
+* Description of the approach
+* Pros:
+** [advantage]
+** [advantage]
+* Cons:
+** [disadvantage]
+** [disadvantage]
+
+=== Decision
+
+State the decision clearly. One or two sentences.
+
+=== Rationale
+
+Explain _why_ this option was chosen over the alternatives. Reference the context
+and constraints that made this the best available choice — not the ideal one.
+
+_The rationale is the most important section of an ADR. Six months from now,
+nobody will question what you decided — they'll question why._
+
+=== Consequences
+
+What changes as a result of this decision?
+
+* *Positive:* What does this enable or improve?
+* *Negative:* What cost, risk, or limitation does this introduce?
+* *Neutral:* What other decisions or changes does this require?
+
+=== Review Trigger
+
+Under what circumstances should this decision be revisited?
+
+* [e.g., "When traffic exceeds 10,000 requests per second"]
+* [e.g., "When the team grows beyond two squads"]
+* [e.g., "In 12 months, regardless"]
+
+---
+
+== Usage Notes
+
+=== File Naming
+
+Use sequential numbering: `adr-001-use-postgresql.adoc`, `adr-002-adopt-event-sourcing.adoc`.
+
+=== Principles
+
+* *Immutable records:* Don't edit accepted ADRs. If a decision changes, write a new
+ADR that supersedes the old one and update the old one's status.
+* *Short and honest:* An ADR that takes more than 15 minutes to write is trying to
+do too much. If the decision is genuinely complex, break it into smaller decisions.
+* *Record what you rejected:* The options you didn't choose are as valuable as the
+one you did. Future engineers will face similar tradeoffs and need to understand
+why alternatives were ruled out.
+* *Include the uncomfortable parts:* If the decision has known downsides, say so.
+An ADR that only lists positives isn't a decision record — it's a sales pitch.
+
+=== When to Write One
+
+Write an ADR when a decision:
+
+* Is difficult to reverse
+* Affects multiple teams or services
+* Involves a significant tradeoff
+* Will be questioned by future engineers
+* Changes a pattern the team currently follows
+
+Don't write one for routine choices that follow established patterns.
+
+---
+
+_Template by Ian Robinson. Adapted from Michael Nygard's original ADR format._

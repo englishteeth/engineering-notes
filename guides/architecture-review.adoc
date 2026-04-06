@@ -1,0 +1,304 @@
+= Running an Effective Architecture Review
+A Practical Guide for Teams Inheriting, Scaling, or Questioning Their Systems
+Ian Robinson
+v1.0
+
+:doctype: article
+:toc: left
+:toc-title: Contents
+:toclevels: 2
+:icons: font
+:source-highlighter: highlight.js
+:title-page:
+:toc-title: Table of Contents
+
+== Foreword
+
+Most architecture reviews happen too late.
+
+They happen after an incident. After a failed scaling event. After a key
+engineer leaves and the team realises nobody else understands how the system
+actually works.
+
+The good news is that a review conducted honestly — even late — is worth
+more than one conducted early and forgotten. The bad news is that the longer
+you wait, the more uncomfortable the findings tend to be.
+
+This guide describes how I run an architecture review. It's not a framework
+or a methodology — it's a practical sequence that has consistently surfaced
+the problems that matter in systems I've been brought in to assess.
+
+<<<
+
+== When to Review
+
+An architecture review is most valuable at these moments:
+
+* *After significant growth* — in traffic, team size, or feature surface area
+* *Before major investment* — new platform, new market, new capability
+* *After a serious incident* — particularly one that surprised the team
+* *During leadership change* — a new CTO, Head of Engineering, or architect
+* *When velocity declines* — and nobody can clearly explain why
+* *When the system feels fragile* — even if the metrics don't show it yet
+
+The trigger is almost never "the architecture is broken". It's usually a
+quieter signal: things that used to be easy have become hard, and the team
+can't articulate why.
+
+<<<
+
+== Principles
+
+=== Outcomes, Not Opinions
+
+A review should produce findings, not preferences. "You should use Kubernetes"
+is an opinion. "Your deployment pipeline requires manual coordination across
+three teams, adding an average of two days to each release" is a finding.
+
+Findings describe what is. Recommendations describe what could be different
+and why the change would matter. Keep them separate.
+
+=== Respect the History
+
+Every decision that looks questionable now was made by someone under constraints
+you may not fully understand. The system exists, it works (mostly), and it got
+the business to where it is today. A review that starts from "this is all wrong"
+will lose the trust of the team before it produces any value.
+
+Seek to understand the constraints before you judge the decisions.
+
+=== Talk to the Team, Not Just the Code
+
+The codebase will show you what the system does. The team will tell you why.
+Architecture is as much about the decisions that were considered and rejected
+as it is about the ones that were made. Only people can tell you that story.
+
+=== Written Over Verbal
+
+A review that lives in someone's head or in a slide deck that nobody opens
+again is a review that never happened. Write it down. Make it specific.
+Make it findable.
+
+<<<
+
+== The Review Process
+
+=== Phase 1: Scoping
+
+Before looking at any code or infrastructure, define what you're reviewing and why.
+
+==== Questions to answer:
+
+* What triggered this review?
+* What are the business and technical goals for the next 12-18 months?
+* What areas of the system are causing the most concern?
+* What's explicitly out of scope?
+
+==== Outputs:
+
+* A one-page scope document listing the systems, qualities, and concerns under review
+* Agreement on who the findings will be shared with
+
+_Without a clear scope, a review expands to fill all available time and
+produces a report that's comprehensive but not actionable._
+
+---
+
+=== Phase 2: Context Gathering
+
+Gather existing documentation, architecture diagrams, and operational data.
+Don't expect it to be complete or current — the gaps are themselves a finding.
+
+==== Collect:
+
+* Existing architecture diagrams (and note their age)
+* Deployment pipeline configuration
+* Incident history (last 6-12 months)
+* Monitoring dashboards and alerting configuration
+* On-call runbooks
+* Any existing ADRs (Architecture Decision Records)
+
+==== Ask:
+
+* What documentation exists and how current is it?
+* Who drew the last architecture diagram, and when?
+* Where do new engineers go to understand the system?
+
+_If the answer to "where's the architecture documentation?" is a person's
+name, that's a finding._
+
+---
+
+=== Phase 3: Technical Assessment
+
+This is the core of the review. Work through each area systematically.
+
+==== Structure & Boundaries
+
+* How is the system decomposed? Along what lines?
+* Are the boundaries between components well-defined?
+* Where is coupling tightest?
+* What would break if you removed a single component?
+
+==== Data
+
+* Where does data live? How does it move?
+* What are the consistency guarantees? Are they understood by the team?
+* Where is the authoritative source of truth for key domain concepts?
+* Is data being duplicated across services, and if so, is that deliberate?
+
+==== Deployment & Operations
+
+* How does code get from a developer's machine to production?
+* How long does a deployment take? How often does it happen?
+* What manual steps exist in the deployment process?
+* What does the on-call experience look like?
+
+==== Resilience & Failure Modes
+
+* What are the known single points of failure?
+* What happens when a downstream dependency is unavailable?
+* When was failover last tested?
+* What's the team's confidence in their disaster recovery process?
+
+==== Security & Compliance
+
+* How are secrets managed?
+* What's the permission model? When was it last reviewed?
+* Are there compliance requirements that influence architectural decisions?
+* Where does personal data live, and who can access it?
+
+==== Observability
+
+* Can you trace a request from ingress to final response?
+* Are alerts tied to meaningful thresholds, or have they been silenced?
+* How long does it take to diagnose a cross-service issue?
+
+---
+
+=== Phase 4: Team Conversations
+
+Schedule conversations with engineers, tech leads, and product people.
+The goal is to understand the human system around the technical one.
+
+==== For engineers:
+
+* What's the most frustrating part of working on this system?
+* What would you fix if you had a free week?
+* What part of the system are you most nervous about?
+* What do you wish you'd known when you joined?
+
+==== For tech leads:
+
+* Where do you spend most of your time — building or firefighting?
+* What decisions would you make differently if you could go back?
+* What's the biggest risk the team is carrying right now?
+
+==== For product:
+
+* What capabilities does the business need in the next 12 months?
+* Where does the system slow down the business?
+* What's the cost of the current architecture in terms they can feel?
+
+_The most important finding in any review often comes from the team, not
+the code. Listen for the thing that everyone knows but nobody has said
+out loud._
+
+---
+
+=== Phase 5: Findings & Recommendations
+
+==== Structure your findings as:
+
+. *Observation* — what you found, stated as fact
+. *Impact* — what effect this has on delivery, reliability, cost, or risk
+. *Recommendation* — what to do about it
+. *Priority* — how urgently it needs attention
+
+==== Prioritise using:
+
+* *Critical* — actively causing incidents, data loss, or security exposure
+* *High* — significantly impacting velocity, reliability, or cost
+* *Medium* — creating friction that will worsen as the system grows
+* *Low* — worth addressing but not urgent
+
+==== Keep it honest:
+
+* Don't soften findings to avoid discomfort
+* Don't recommend changes you can't justify with evidence
+* Acknowledge what's working well — not everything will be a problem
+* Be specific enough that someone could act on each recommendation
+without asking you what you meant
+
+---
+
+=== Phase 6: Handover
+
+A review is only as good as the action it produces.
+
+* Present findings to the team first — before leadership
+* Give people a chance to correct factual errors or add context
+* Produce a written report that can stand on its own
+* Propose a follow-up checkpoint (30, 60, or 90 days) to review progress
+
+_The worst outcome of a review is a report that everyone agrees with
+and nobody acts on. Tie each recommendation to a named owner and a
+time horizon._
+
+<<<
+
+== Common Anti-Patterns
+
+=== The Reassurance Review
+
+A review commissioned to confirm that everything is fine. The scope is narrow,
+the questions are leading, and the findings are mild. This happens when
+leadership wants validation, not insight.
+
+_If you've been asked to do a review and told the expected outcome in advance,
+you're not being asked to review — you're being asked to endorse._
+
+=== The Boil-the-Ocean Review
+
+A review that tries to assess everything and takes so long that the system
+has changed by the time the report lands. Scope aggressively. A focused
+review that surfaces three actionable findings is worth more than a
+comprehensive one that surfaces thirty.
+
+=== The Technology Review Disguised as Architecture
+
+A review that focuses on technology choices (should we use Kafka? should we
+move to Kubernetes?) rather than architectural qualities (is the system
+resilient? can we deploy independently? is coupling controlled?).
+
+_Technology choices are interesting. Architectural properties are what matter.
+You can have excellent technology choices and terrible architecture — and
+vice versa._
+
+=== The Blame Audit
+
+A review that becomes an exercise in finding who made bad decisions. This
+destroys trust and ensures the next review will never happen. Focus on the
+decisions and their consequences, not the people who made them.
+
+<<<
+
+== Closing Thoughts
+
+An architecture review is not an exam. It's not a judgement on the team or
+the system. It's a structured opportunity to step back from the day-to-day
+and see the whole picture — the picture that's invisible when you're focused
+on your part of the system.
+
+The teams that benefit most from reviews are the ones who didn't need to be
+forced into having one. They asked for it because they wanted to see clearly —
+even if what they saw was uncomfortable.
+
+That willingness to look honestly at your own system is the single best
+predictor of engineering quality I've encountered in 30 years.
+
+---
+
+_Ian Robinson is a Software Architect and Consultant with over 30 years of experience
+designing scalable systems across cloud, financial services, defence, and startup environments.
+For architecture review enquiries: ian@englishteeth.com_

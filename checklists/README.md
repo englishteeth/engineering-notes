@@ -1,43 +1,45 @@
-# Have You Outgrown Your AWS Setup?
-### A Self-Audit Checklist for Growing Engineering Teams
+# Checklists
+### Structured Prompts for Engineering Teams
 
-Most AWS architecture problems aren't caused by bad engineering.
+Most architecture problems aren't caused by bad engineering.
 
 They're caused by good engineers making reasonable decisions at the time — and nobody stepping back to ask whether those decisions still make sense as the system, the team, and the traffic have grown.
 
-This checklist is what I work through when I review a growing team's AWS setup. It covers the patterns I've seen repeatedly across financial services, startups, enterprise and defence environments over 30 years of software architecture work.
+This is the first in a series of structured checklists — self-audit tools for engineering teams who'd rather find a problem themselves than be surprised by it later.
 
-It won't tell you anything you couldn't eventually figure out yourself. It will save you the time and pain of figuring it out during an incident.
+Each checklist covers patterns I've seen repeatedly across financial services, startups, enterprise and defence environments over 30 years of software architecture work.
+
+They won't tell you anything you couldn't eventually figure out yourself. They will save you the time and pain of figuring it out during an incident.
+
+---
+
+## Checklists
+
+| Title | Description |
+|---|---|
+| [Have You Outgrown Your AWS Setup?](aws-growth-audit-checklist.adoc) | A self-audit for growing engineering teams whose cloud architecture has evolved faster than it's been reviewed |
+| [Is Your Microservice Architecture Actually Working?](microservices-health-check.adoc) | A health check for teams beyond the honeymoon phase of microservices adoption |
+| [Technical Debt Triage](technical-debt-triage.adoc) | A structured framework for teams who know they have debt but don't know where to start |
 
 ---
 
 ## Who this is for
 
-- Engineering teams whose AWS setup has evolved organically and hasn't been formally reviewed
+- Engineering teams whose systems have evolved organically and haven't been formally reviewed
 - CTOs and Heads of Engineering who suspect their original architecture decisions may not have kept pace with growth
 - Architects inheriting a system and looking for a structured starting point
 
 ## Who this is not for
 
-Teams just getting started on AWS. This isn't a beginner's guide — it's a prompt for teams who consider themselves experienced but may have blind spots they haven't had cause to examine yet.
+Teams just getting started. These aren't beginner's guides — they're prompts for teams who consider themselves experienced but may have blind spots they haven't had cause to examine yet.
 
 ---
 
-## What's covered
-
-- **Cost & Billing** — the costs that creep up quietly as you scale
-- **Architecture & Scaling** — decisions that made sense early but carry hidden risk at growth
-- **CI/CD & Deployment** — pipeline debt and the cultural signals it reveals
-- **Security & Compliance** — permission creep, trust boundary sprawl, and GDPR at scale
-- **Observability & Operational Maturity** — the difference between a healthy system and one that just hasn't failed yet
-
----
-
-## Using this checklist
+## Using these checklists
 
 The questions are intentionally direct. Some will have comfortable answers. Others won't — and that's the point.
 
-Work through it as a team if you can. The most useful conversations tend to happen when two people give different answers to the same question.
+Work through them as a team if you can. The most useful conversations tend to happen when two people give different answers to the same question.
 
 ---
 
